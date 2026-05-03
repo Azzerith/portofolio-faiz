@@ -1,0 +1,4 @@
+portofolio-2026/public/reels.mp4 filter=lfs diff=lfs merge=lfs -text
+portofolio-2026/public/indoneris.mp4 filter=lfs diff=lfs merge=lfs -text
+portofolio-2026/public/corisindo.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
