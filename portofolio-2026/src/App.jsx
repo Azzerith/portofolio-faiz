@@ -192,6 +192,23 @@ function App() {
                   <Briefcase size={26}/> Experience
                 </h2>
                 <div className="border-l-4 border-amber-400 pl-5 mb-6">
+                  <h3 className="text-xl font-semibold">Full-Stack Developer (MSIB Intern)</h3>
+                  <p className="text-amber-600 font-medium">PT Ruangraya Indonesia · Remote</p>
+                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                    <Calendar size={14}/> Sep 2024 – Dec 2024
+                  </p>
+                  <ul className="mt-3 space-y-2 text-gray-700 list-disc list-inside">
+                    <li>Developed an AI-powered Smart Home Energy Management System to analyze energy consumption from CSV data</li>
+                    <li>Integrated Hugging Face TAPAS model and built chatbot using Gemini API for real-time interaction</li>
+                  </ul>
+                </div>
+                <div className="grid grid-cols-4 gap-2 mt-4">
+                  {rgImages.slice(2, 5).map((img, idx) => (
+                    <img key={idx} src={`./${img}`} className="w-full h-20 rounded-xl object-cover shadow-md" alt="project"/>
+                  ))}
+                </div>
+                <br></br>
+                <div className="border-l-4 border-amber-400 pl-5 mb-6">
                   <h3 className="text-xl font-semibold">Typesetter Webtoon KR to JP</h3>
                   <p className="text-amber-600 font-medium">PT GREEN WIND CULTURE</p>
                   <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
@@ -208,22 +225,6 @@ function App() {
                   ))}
                 </div>
                 <br></br>
-                <div className="border-l-4 border-amber-400 pl-5 mb-6">
-                  <h3 className="text-xl font-semibold">Full-Stack Developer (MSIB Intern)</h3>
-                  <p className="text-amber-600 font-medium">PT Ruangraya Indonesia · Remote</p>
-                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                    <Calendar size={14}/> Sep 2024 – Dec 2024
-                  </p>
-                  <ul className="mt-3 space-y-2 text-gray-700 list-disc list-inside">
-                    <li>Developed an AI-powered Smart Home Energy Management System to analyze energy consumption from CSV data</li>
-                    <li>Integrated Hugging Face TAPAS model and built chatbot using Gemini API for real-time interaction</li>
-                  </ul>
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  {rgImages.slice(2, 5).map((img, idx) => (
-                    <img key={idx} src={`./${img}`} className="w-full h-20 rounded-xl object-cover shadow-md" alt="project"/>
-                  ))}
-                </div>
               </div>
             </ScrollAnimation>
 

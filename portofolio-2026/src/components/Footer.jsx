@@ -58,6 +58,7 @@ const Footer = () => {
             <p className="text-amber-100 text-sm leading-relaxed">
               Full-Stack Developer specializing in Golang and React. 
               Delivering scalable web applications and innovative solutions.
+              Graphic Designer specializing in Design and Illustration.
             </p>
             <div className="flex gap-3 mt-5">
               {socialLinks.map((social, index) => (
@@ -180,7 +181,7 @@ const Footer = () => {
             </span>
           </p>
           <p className="text-xs mt-2 text-amber-200/70">
-            Full-Stack Developer | Golang Backend | React Frontend
+            Full-Stack Developer | Golang Backend | React Frontend | Graphic Designer
           </p>
         </motion.div>
       </div>
