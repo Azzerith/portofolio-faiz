@@ -13,6 +13,7 @@ function App() {
   const tpqImages = ['tpq1.png', 'tpq2.png', 'tpq3.png', 'tpq4.png'];
   const faImages = ['fa1.png', 'fa2.png', 'fa3.png', 'fa4.png', 'fa5.png'];
   const rgImages = ['rg1.png', 'rg2.png', 'rg3.png', 'rg4.png', 'rg5.png'];
+  const tsImages = ['ts1.png', 'ts2.png', 'ts3.png'];
 
   const projects = [
     {
@@ -191,12 +192,22 @@ function App() {
                   <Briefcase size={26}/> Experience
                 </h2>
                 <div className="border-l-4 border-amber-400 pl-5 mb-6">
-                  <h3 className="text-xl font-semibold">Typesetter Webtoon</h3>
+                  <h3 className="text-xl font-semibold">Typesetter Webtoon KR to JP</h3>
                   <p className="text-amber-600 font-medium">PT GREEN WIND CULTURE</p>
                   <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
                     <Calendar size={14}/> Oktober 2025 – Maret 2026
                   </p>
+                  <ul className="mt-3 space-y-2 text-gray-700 list-disc list-inside">
+                    <li><span className="font-medium text-gray-900">Typesetting & Typography:</span> Inserted translated Japanese text into panels, selectively choosing fonts and adjusting layouts based on the story's mood (tension, comedy, romance).</li>
+                    <li><span className="font-medium text-gray-900">Retouching, Redrawing & SFX:</span> Erased original Korean text, seamlessly restored obscured backgrounds (cleaning), and artistically redesigned sound effects (SFX) into aesthetic Japanese characters.</li>
+                  </ul>
                 </div>
+                <div className="grid grid-cols-4 gap-2 mt-4">
+                  {tsImages.slice(0, 3).map((img, idx) => (
+                    <img key={idx} src={`./${img}`} className="w-full h-20 rounded-xl object-cover shadow-md" alt="project"/>
+                  ))}
+                </div>
+                <br></br>
                 <div className="border-l-4 border-amber-400 pl-5 mb-6">
                   <h3 className="text-xl font-semibold">Full-Stack Developer (MSIB Intern)</h3>
                   <p className="text-amber-600 font-medium">PT Ruangraya Indonesia · Remote</p>
