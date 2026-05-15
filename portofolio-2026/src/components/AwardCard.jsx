@@ -5,7 +5,9 @@ import ScrollAnimation from './ScrollAnimation';
 const AwardCard = ({ award, index }) => {
   const getIcon = () => {
     if (award.type === 'animation') return <Award className="text-amber-500" size={24} />;
-    return <Video className="text-amber-500" size={24} />;
+    if (award.type === 'reels') return <Video className="text-amber-500" size={24} />;
+    if (award.type === 'komik') return <Award className="text-amber-500" size={24} />;
+    return <Award className="text-amber-500" size={24} />;
   };
 
   const videoUrl = award.video || null;

@@ -198,7 +198,7 @@ const ProfileCard = ({ photo, photoFallback }) => {
         
         <div className="text-center mt-6">
           <h2 className="text-xl md:text-2xl font-bold text-gray-800">Muhammad Faiz Alfi Rahman</h2>
-          <p className="text-amber-600 font-medium mt-1">Golang · React · Full-Stack</p>
+          <p className="text-amber-600 font-medium mt-1">Web Developer - Graphic Designer</p>
         </div>
         
         <div className="mt-5 space-y-2 text-sm text-gray-600">

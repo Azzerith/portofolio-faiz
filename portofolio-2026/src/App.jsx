@@ -71,10 +71,22 @@ function App() {
       type: 'reels', 
       images: ['reels.png'],
       video: 'https://youtu.be/APSZ_AvLlqU?si=OqCPkJ1URNYA_9SD'
+    },
+    { 
+      title: 'Juara 4 Komik Strip', 
+      event: 'AOV 3rd Anniversary', 
+      year: '2019', 
+      type: 'komik'
+    },
+    { 
+      title: 'Juara Harapan 2 Animation', 
+      event: 'INDONERIS', 
+      year: '2023', 
+      type: 'animation'
     }
   ];
 
-  const skills = ['Golang', 'React', 'Tailwind', 'MySQL', 'Gin', 'JavaScript', 'Git', 'REST API', 'HTML/CSS'];
+  const skills = ['Golang', 'React', 'Tailwind', 'MySQL', 'Gin', 'JavaScript', 'Git', 'REST API', 'HTML/CSS', 'Adobe Photoshop', 'Adobe Illustrator', 'Capcut Windows', 'Ibis Paint X Android', 'Canva'];
 
   return (
     <div className="relative min-h-screen bg-white">
@@ -97,7 +109,7 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                 >
-                  Full-Stack Developer
+                  Full-Stack Web Developer & Graphic Designer
                 </motion.h1>
                 <motion.p 
                   className="text-gray-600 text-lg mt-4 leading-relaxed"
@@ -106,7 +118,7 @@ function App() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
                   Specializing in <span className="font-semibold text-amber-600">Golang</span> and <span className="font-semibold text-blue-500">React</span> with hands-on experience building scalable web applications and RESTful APIs.
-                  Delivered end-to-end systems that reduced manual processes from 2 days to under 2 hours.
+                  Also passionate about visual storytelling and <span className="font-semibold text-pink-500">Graphic Design</span>, blending technical programming skills with creative expertise in digital illustration and webtoon typesetting.
                 </motion.p>
                 <motion.div 
                   className="flex flex-wrap gap-3 mt-6 justify-center lg:justify-start"
@@ -156,6 +168,11 @@ function App() {
                       {skill === 'Git' && <i className="fab fa-git-alt text-[#F05032]"></i>}
                       {skill === 'REST API' && <i className="fas fa-plug text-[#4CAF50]"></i>}
                       {skill === 'HTML/CSS' && <i className="fab fa-html5 text-[#E34F26]"></i>}
+                      {skill === 'Adobe Photoshop' && <i className="fas fa-palette text-[#31A8FF]"></i>}
+                      {skill === 'Adobe Illustrator' && <i className="fas fa-pen-nib text-[#FF9A00]"></i>}
+                      {skill === 'Capcut Windows' && <i className="fas fa-video text-gray-800"></i>}
+                      {skill === 'Ibis Paint X Android' && <i className="fas fa-paint-brush text-blue-500"></i>}
+                      {skill === 'Canva' && <i className="fas fa-object-group text-[#00C4CC]"></i>}
                     </span>
                     <span className="ml-2">{skill}</span>
                   </motion.div>
@@ -173,6 +190,13 @@ function App() {
                 <h2 className="text-2xl font-bold flex gap-2 mb-6">
                   <Briefcase size={26}/> Experience
                 </h2>
+                <div className="border-l-4 border-amber-400 pl-5 mb-6">
+                  <h3 className="text-xl font-semibold">Typesetter Webtoon</h3>
+                  <p className="text-amber-600 font-medium">PT GREEN WIND CULTURE</p>
+                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                    <Calendar size={14}/> Oktober 2025 – Maret 2026
+                  </p>
+                </div>
                 <div className="border-l-4 border-amber-400 pl-5 mb-6">
                   <h3 className="text-xl font-semibold">Full-Stack Developer (MSIB Intern)</h3>
                   <p className="text-amber-600 font-medium">PT Ruangraya Indonesia · Remote</p>
