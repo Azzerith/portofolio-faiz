@@ -197,7 +197,7 @@ const Navbar = () => {
               <div className="absolute bottom-8 left-0 right-0 px-5">
                 <div className="border-t border-white/20 pt-4">
                   <p className="text-white/60 text-xs text-center">
-                    © 2026 Faiz Alfi
+                    © 2026 Muhammad Faiz Alfi Rahman
                   </p>
                 </div>
               </div>

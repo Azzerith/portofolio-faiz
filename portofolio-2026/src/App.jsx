@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import ParticleBackground from './components/ParticleBackground';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
@@ -7,7 +8,7 @@ import ProfileCard from './components/ProfileCard';
 import ScrollAnimation from './components/ScrollAnimation';
 import ProjectCard from './components/ProjectCard';
 import AwardCard from './components/AwardCard';
-import { Code, Briefcase, Calendar, Users, BookOpen, CheckCircle, Zap, Cpu, TrendingUp, ExternalLink, Mail } from 'lucide-react';
+import { Code, Briefcase, Calendar, Users, BookOpen, CheckCircle, Zap, Cpu, TrendingUp, ExternalLink, Mail, Star, Trophy, Sparkles, Award, Clock } from 'lucide-react';
 
 function App() {
   const tpqImages = ['tpq1.png', 'tpq2.png', 'tpq3.png', 'tpq4.png'];
@@ -55,7 +56,9 @@ function App() {
       year: '2024', 
       type: 'animation', 
       images: ['corisindo1.png'],
-      video: 'https://youtu.be/7aKY4Xql_m0?si=vm-dye7N7IpUcKIS'
+      video: 'https://youtu.be/7aKY4Xql_m0?si=vm-dye7N7IpUcKIS',
+      icon: Trophy,
+      color: 'from-yellow-500 to-amber-600'
     },
     { 
       title: '1st Place Animation', 
@@ -63,7 +66,9 @@ function App() {
       year: '2024', 
       type: 'animation', 
       images: ['indoneris1.png'],
-      video: 'https://youtu.be/H29Gu-5hZ1Q?si=u65zb9iu0b_e1PLd'
+      video: 'https://youtu.be/H29Gu-5hZ1Q?si=u65zb9iu0b_e1PLd',
+      icon: Star,
+      color: 'from-purple-500 to-pink-500'
     },
     { 
       title: '2nd Place Video Reels', 
@@ -71,26 +76,98 @@ function App() {
       year: '2023', 
       type: 'reels', 
       images: ['reels.png'],
-      video: 'https://youtu.be/APSZ_AvLlqU?si=OqCPkJ1URNYA_9SD'
+      video: 'https://youtu.be/APSZ_AvLlqU?si=OqCPkJ1URNYA_9SD',
+      icon: Award,
+      color: 'from-blue-500 to-cyan-500'
     },
     { 
       title: 'Juara 4 Komik Strip', 
       event: 'AOV 3rd Anniversary', 
       year: '2019', 
-      type: 'komik'
+      type: 'komik',
+      icon: Sparkles,
+      color: 'from-green-500 to-emerald-500'
     },
     { 
       title: 'Juara Harapan 2 Animation', 
       event: 'INDONERIS', 
       year: '2023', 
-      type: 'animation'
+      type: 'animation',
+      icon: Star,
+      color: 'from-orange-500 to-red-500'
     }
   ];
 
   const skills = ['Golang', 'React', 'Tailwind', 'MySQL', 'Gin', 'JavaScript', 'Git', 'REST API', 'HTML/CSS', 'Adobe Photoshop', 'Adobe Illustrator', 'Capcut Windows', 'Ibis Paint X Android', 'Canva'];
 
+  // Refs untuk scroll animations
+  const experienceRef = useRef(null);
+  const awardsRef = useRef(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [activeAward, setActiveAward] = useState(-1);
+
+  // Scroll-based background color change
+  const { scrollYProgress } = useScroll();
+  const bgColor = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.5, 0.7, 0.9],
+    ['#ffffff', '#fef3c7', '#fed7aa', '#fef3c7', '#ffffff']
+  );
+
+  // Intersection Observer untuk step animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const step = parseInt(entry.target.dataset.step);
+            setActiveStep(step);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const steps = document.querySelectorAll('.experience-step');
+    steps.forEach((step) => observer.observe(step));
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Timeline data dengan animasi
+  const experiences = [
+    {
+      title: 'Full-Stack Developer (MSIB Intern)',
+      company: 'PT Ruangraya Indonesia · Remote',
+      period: 'Sep 2024 – Dec 2024',
+      icon: Code,
+      color: 'from-blue-500 to-cyan-500',
+      achievements: [
+        'Developed an AI-powered Smart Home Energy Management System to analyze energy consumption from CSV data',
+        'Integrated Hugging Face TAPAS model and built chatbot using Gemini API for real-time interaction'
+      ],
+      images: rgImages.slice(2, 5)
+    },
+    {
+      title: 'Typesetter Webtoon KR to JP',
+      company: 'PT GREEN WIND CULTURE',
+      period: 'October 2025 – March 2026',
+      icon: Sparkles,
+      color: 'from-purple-500 to-pink-500',
+      achievements: [
+        'Typesetting & Typography: Inserted translated Japanese text into panels, selectively choosing fonts and adjusting layouts based on the story\'s mood (tension, comedy, romance)',
+        'Retouching, Redrawing & SFX: Erased original Korean text, seamlessly restored obscured backgrounds (cleaning), and artistically redesigned sound effects (SFX) into aesthetic Japanese characters'
+      ],
+      images: tsImages.slice(0, 3)
+    }
+  ];
+
   return (
-    <div className="relative min-h-screen bg-white">
+    <motion.div 
+      className="relative min-h-screen"
+      style={{ backgroundColor: bgColor }}
+      transition={{ duration: 0.5 }}
+    >
       <CustomCursor />
       <Navbar />
       <ParticleBackground />
@@ -183,70 +260,300 @@ function App() {
           </ScrollAnimation>
         </section>
 
-        {/* Experience Section */}
-        <section id="experience" className="scroll-mt-20">
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            <ScrollAnimation direction="left" delay={0.3}>
-              <div className="glass-card p-6 md:p-8">
-                <h2 className="text-2xl font-bold flex gap-2 mb-6">
-                  <Briefcase size={26}/> Experience
-                </h2>
-                <div className="border-l-4 border-amber-400 pl-5 mb-6">
-                  <h3 className="text-xl font-semibold">Full-Stack Developer (MSIB Intern)</h3>
-                  <p className="text-amber-600 font-medium">PT Ruangraya Indonesia · Remote</p>
-                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                    <Calendar size={14}/> Sep 2024 – Dec 2024
-                  </p>
-                  <ul className="mt-3 space-y-2 text-gray-700 list-disc list-inside">
-                    <li>Developed an AI-powered Smart Home Energy Management System to analyze energy consumption from CSV data</li>
-                    <li>Integrated Hugging Face TAPAS model and built chatbot using Gemini API for real-time interaction</li>
-                  </ul>
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  {rgImages.slice(2, 5).map((img, idx) => (
-                    <img key={idx} src={`./${img}`} className="w-full h-20 rounded-xl object-cover shadow-md" alt="project"/>
-                  ))}
-                </div>
-                <br></br>
-                <div className="border-l-4 border-amber-400 pl-5 mb-6">
-                  <h3 className="text-xl font-semibold">Typesetter Webtoon KR to JP</h3>
-                  <p className="text-amber-600 font-medium">PT GREEN WIND CULTURE</p>
-                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                    <Calendar size={14}/> Oktober 2025 – Maret 2026
-                  </p>
-                  <ul className="mt-3 space-y-2 text-gray-700 list-disc list-inside">
-                    <li><span className="font-medium text-gray-900">Typesetting & Typography:</span> Inserted translated Japanese text into panels, selectively choosing fonts and adjusting layouts based on the story's mood (tension, comedy, romance).</li>
-                    <li><span className="font-medium text-gray-900">Retouching, Redrawing & SFX:</span> Erased original Korean text, seamlessly restored obscured backgrounds (cleaning), and artistically redesigned sound effects (SFX) into aesthetic Japanese characters.</li>
-                  </ul>
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  {tsImages.slice(0, 3).map((img, idx) => (
-                    <img key={idx} src={`./${img}`} className="w-full h-20 rounded-xl object-cover shadow-md" alt="project"/>
-                  ))}
-                </div>
-                <br></br>
-              </div>
-            </ScrollAnimation>
+        {/* Enhanced Experience Section with Timeline Animation */}
+        <section id="experience" className="scroll-mt-20" ref={experienceRef}>
+          <div className="mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent inline-block">
+                Experience
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
+            </motion.div>
 
-            <ScrollAnimation direction="right" delay={0.4}>
-              <div className="glass-card p-6 md:p-8">
-                <h2 className="text-2xl font-bold flex gap-2 mb-6">
-                  <Users size={26}/> Awards & Achievements
-                </h2>
-                <div className="space-y-3">
-                  {awards.map((award, i) => (
-                    <AwardCard key={i} award={award} index={i} />
-                  ))}
-                </div>
-                <div className="mt-5 pt-4 border-t border-gray-100">
-                  <h3 className="font-bold flex items-center gap-2 mb-2">Leadership</h3>
-                  <p className="text-sm"><span className="font-semibold">Chairman - UKM LDK IMAM</span> (Nov 2023 – Oct 2024)</p>
-                  <p className="text-sm text-gray-600 mt-1">Led organization operations, managed cross-division collaboration, organized campus-scale events.</p>
-                  <p className="text-sm mt-2"><span className="font-semibold">Multimedia Coordinator - Forum Asisten Praktikum</span> (Aug 2024 – Aug 2025)</p>
-                </div>
-              </div>
-            </ScrollAnimation>
+            {/* Timeline */}
+            <div className="relative">
+              {/* Timeline Line */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-amber-300 via-orange-400 to-amber-300 rounded-full hidden md:block"></div>
+              
+              {experiences.map((exp, idx) => (
+                <motion.div
+                  key={idx}
+                  data-step={idx}
+                  className={`experience-step relative mb-16 ${idx % 2 === 0 ? 'md:pr-[50%]' : 'md:pl-[50%] md:mt-[-80px]'}`}
+                  initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: idx * 0.2 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                >
+                  {/* Timeline Dot */}
+                  <motion.div 
+                    className={`absolute top-0 ${idx % 2 === 0 ? 'md:right-[-8px]' : 'md:left-[-8px]'} hidden md:flex items-center justify-center w-4 h-4 rounded-full bg-gradient-to-r ${exp.color} shadow-lg`}
+                    animate={{
+                      scale: activeStep === idx ? [1, 1.5, 1] : 1,
+                      boxShadow: activeStep === idx ? '0 0 20px rgba(245, 158, 11, 0.6)' : '0 0 0px rgba(245, 158, 11, 0)'
+                    }}
+                    transition={{ duration: 1, repeat: activeStep === idx ? Infinity : 0 }}
+                  >
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  </motion.div>
+
+                  {/* Content Card */}
+                  <motion.div 
+                    className={`bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 ${
+                      activeStep === idx ? 'scale-[1.02]' : ''
+                    }`}
+                    whileHover={{ y: -5 }}
+                  >
+                    {/* Header dengan gradient */}
+                    <div className={`bg-gradient-to-r ${exp.color} p-6 text-white`}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <exp.icon size={28} />
+                        <h3 className="text-2xl font-bold">{exp.title}</h3>
+                      </div>
+                      <p className="text-white text-opacity-90 flex items-center gap-2">
+                        <Briefcase size={16} /> {exp.company}
+                      </p>
+                      <p className="text-white text-opacity-75 flex items-center gap-2 mt-1">
+                        <Calendar size={14} /> {exp.period}
+                      </p>
+                    </div>
+
+                    {/* Content Body */}
+                    <div className="p-6">
+
+                      {/* Achievements */}
+                      <div className="space-y-3 mb-6">
+                        {exp.achievements.map((achievement, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 + i * 0.1 }}
+                            className="flex items-start gap-3"
+                          >
+                            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <CheckCircle size={14} className="text-green-600" />
+                            </div>
+                            <p className="text-gray-700 text-sm">{achievement}</p>
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      {/* Image Gallery */}
+                      {exp.images && exp.images.length > 0 && (
+                        <motion.div 
+                          className="grid grid-cols-3 gap-2"
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 }}
+                        >
+                          {exp.images.map((img, idx) => (
+                            <motion.img
+                              key={idx}
+                              src={`./${img}`}
+                              className="w-full h-24 rounded-lg object-cover shadow-md hover:shadow-xl transition-all cursor-pointer"
+                              alt="project"
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 0.2 }}
+                            />
+                          ))}
+                        </motion.div>
+                      )}
+                    </div>
+
+                    {/* Progress indicator */}
+                    {activeStep === idx && (
+                      <motion.div 
+                        className="h-1 bg-gradient-to-r from-amber-400 to-orange-500"
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                      />
+                    )}
+                  </motion.div>
+                </motion.div>
+              ))}
+            </div>
           </div>
+        </section>
+
+        {/* Enhanced Awards Section with 3D Cards */}
+        <section id="awards" className="scroll-mt-20 mb-20" ref={awardsRef}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent inline-block">
+              Awards & Achievements
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
+            <p className="text-gray-600 mt-3">Recognitions that highlight my dedication and excellence</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {awards.map((award, idx) => {
+              const IconComponent = award.icon || Award;
+              return (
+                <motion.div
+                  key={idx}
+                  className="relative group cursor-pointer"
+                  initial={{ opacity: 0, y: 50, rotateY: -10 }}
+                  whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  whileHover={{ 
+                    y: -10,
+                    transition: { duration: 0.2 }
+                  }}
+                  onMouseEnter={() => setActiveAward(idx)}
+                  onMouseLeave={() => setActiveAward(-1)}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-r ${award.color} rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`}></div>
+                  
+                  <div className={`relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden ${
+                    activeAward === idx ? 'scale-105' : ''
+                  }`}>
+                    {/* Animated Background */}
+                    <motion.div 
+                      className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${award.color} rounded-full opacity-10`}
+                      animate={{
+                        scale: activeAward === idx ? [1, 1.2, 1] : 1,
+                        rotate: activeAward === idx ? [0, 360] : 0
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      style={{ top: '-40px', right: '-40px' }}
+                    />
+
+                    {/* Year Badge */}
+                    <motion.div 
+                      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${award.color} text-white text-sm font-semibold mb-4`}
+                      animate={{
+                        scale: activeAward === idx ? 1.05 : 1
+                      }}
+                    >
+                      <Clock size={12} />
+                      {award.year}
+                    </motion.div>
+
+                    {/* Icon & Title */}
+                    <div className="flex items-start gap-4 mb-4">
+                      <motion.div 
+                        className={`w-12 h-12 rounded-xl bg-gradient-to-r ${award.color} flex items-center justify-center flex-shrink-0`}
+                        animate={{
+                          rotate: activeAward === idx ? [0, 10, -10, 0] : 0
+                        }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <IconComponent size={24} className="text-white" />
+                      </motion.div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-lg text-gray-800">{award.title}</h3>
+                        <p className="text-gray-500 text-sm">{award.event}</p>
+                      </div>
+                    </div>
+
+                    {/* Achievement Type Tag */}
+                    <div className="mb-4">
+                      <span className={`text-xs px-2 py-1 rounded-full bg-gradient-to-r ${award.color} bg-opacity-20 text-white font-medium`}>
+                        {award.type.toUpperCase()}
+                      </span>
+                    </div>
+
+                    {/* Video/Action Button */}
+                    {award.video && (
+                      <motion.a
+                        href={award.video}
+                        target="_blank"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors"
+                        whileHover={{ x: 5 }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Trophy size={14} />
+                        Watch Award Video
+                        <ExternalLink size={12} />
+                      </motion.a>
+                    )}
+
+                    {/* Image Preview */}
+                    {award.images && award.images[0] && (
+                      <motion.div 
+                        className="mt-4 rounded-xl overflow-hidden"
+                        initial={{ opacity: 0, height: 0 }}
+                        whileInView={{ opacity: 1, height: 'auto' }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <img 
+                          src={`./${award.images[0]}`} 
+                          alt={award.title}
+                          className="w-full h-32 object-cover rounded-xl hover:scale-105 transition-transform duration-300"
+                        />
+                      </motion.div>
+                    )}
+
+                    {/* Animated Border */}
+                    {activeAward === idx && (
+                      <motion.div 
+                        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Leadership Section with Enhanced Design */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-12 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 shadow-lg"
+          >
+            <h3 className="font-bold text-2xl flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
+                <Users size={20} className="text-white" />
+              </div>
+              Leadership & Organization
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div 
+                className="bg-white rounded-xl p-5 shadow-md hover:shadow-xl transition-all"
+                whileHover={{ x: 5 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                    <Star size={16} className="text-amber-600" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Chairman - UKM LDK IMAM</h4>
+                </div>
+                <p className="text-sm text-gray-500 mb-2">Nov 2023 – Oct 2024</p>
+                <p className="text-gray-600 text-sm">Led organization operations, managed cross-division collaboration, organized campus-scale events.</p>
+              </motion.div>
+              <motion.div 
+                className="bg-white rounded-xl p-5 shadow-md hover:shadow-xl transition-all"
+                whileHover={{ x: 5 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Sparkles size={16} className="text-purple-600" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Multimedia Coordinator</h4>
+                </div>
+                <p className="text-sm text-gray-500 mb-2">Forum Asisten Praktikum · Aug 2024 – Aug 2025</p>
+                <p className="text-gray-600 text-sm">Coordinated multimedia content creation and managed visual communications.</p>
+              </motion.div>
+            </div>
+          </motion.div>
         </section>
 
         {/* Projects Section */}
@@ -310,7 +617,7 @@ function App() {
       </div>
       
       <Footer />
-    </div>
+    </motion.div>
   );
 }
 
