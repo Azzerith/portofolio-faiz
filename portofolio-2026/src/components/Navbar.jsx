@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Code, Award, Briefcase, BookOpen, Home, User } from 'lucide-react';
+import { Menu, X, Code, Award, Briefcase, BookOpen, Home, User, Zap, Trophy } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,40 +9,63 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'Home', href: '#home', icon: <Home size={18} /> },
-    { name: 'Skills', href: '#skills', icon: <Code size={18} /> },
+    { name: 'Skills', href: '#skills', icon: <Zap size={18} /> },
     { name: 'Experience', href: '#experience', icon: <Briefcase size={18} /> },
+    { name: 'Awards', href: '#awards', icon: <Trophy size={18} /> },
     { name: 'Projects', href: '#projects', icon: <Code size={18} /> },
-    { name: 'Achievements', href: '#achievements', icon: <Award size={18} /> },
+    { name: 'Education', href: '#achievements', icon: <BookOpen size={18} /> },
     { name: 'Contact', href: '#contact', icon: <User size={18} /> },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      
-      // Deteksi section aktif
-      const sections = navItems.map(item => item.href.substring(1));
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
     };
+
+    const options = {
+      root: null,
+      rootMargin: '-100px 0px -40% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, options);
+    
+    navItems.forEach(item => {
+      const element = document.getElementById(item.href.substring(1));
+      if (element) observer.observe(element);
+    });
+
+    // Observasi 'achievements' juga jika tidak ada di navItems utama (di sini sudah ada)
     
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const scrollToSection = (href) => {
     setIsOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -75,13 +98,14 @@ const Navbar = () => {
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
                 <Code size={22} className="text-amber-500" />
               </div>
-              <span className="text-white font-bold text-lg">Muhammad </span>
-                <span className="text-yellow-200 font-bold text-lg">Faiz </span>
-                <span className="text-white font-bold text-lg">Alfi Rahman</span>
+              <span className="text-white font-bold text-lg hidden lg:inline">Muhammad </span>
+              <span className="text-yellow-200 font-bold text-lg">Faiz </span>
+              <span className="text-white font-bold text-lg hidden xl:inline">Alfi Rahman</span>
+              <span className="text-white font-bold text-lg lg:hidden">F. </span>
             </motion.a>
 
             {/* Desktop Menu */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 lg:gap-1">
               {navItems.map((item, index) => (
                 <motion.a
                   key={item.name}
@@ -90,7 +114,7 @@ const Navbar = () => {
                     e.preventDefault();
                     scrollToSection(item.href);
                   }}
-                  className={`relative px-4 py-2 rounded-full text-white font-medium transition-all duration-300 flex items-center gap-2 ${
+                  className={`relative px-3 lg:px-4 py-2 rounded-full text-white font-medium transition-all duration-300 flex items-center gap-1.5 lg:gap-2 cursor-pointer whitespace-nowrap ${
                     activeSection === item.href.substring(1)
                       ? 'bg-white/20 backdrop-blur-sm'
                       : 'hover:bg-white/10'
@@ -117,11 +141,11 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Hamburger Button - Floating di pojok kanan atas, tanpa background navbar */}
-      <div className="fixed top-4 right-4 z-50 md:hidden">
+      {/* Mobile Hamburger Button - Floating di pojok kanan atas */}
+      <div className="fixed top-4 right-4 z-[100] md:hidden">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-12 h-12 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 shadow-lg flex items-center justify-center text-white"
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 shadow-xl flex items-center justify-center text-white border-2 border-white/20"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           initial={{ opacity: 0, scale: 0 }}
@@ -142,7 +166,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[80] md:hidden"
             />
             
             {/* Menu Panel */}
@@ -150,8 +174,8 @@ const Navbar = () => {
               initial={{ opacity: 0, x: '100%' }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
-              transition={{ type: "spring", damping: 25 }}
-              className="fixed top-0 right-0 bottom-0 w-64 bg-gradient-to-b from-amber-500 to-amber-700 z-40 pt-20 px-5 shadow-2xl"
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 w-72 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-800 z-[90] pt-20 px-6 shadow-2xl flex flex-col pointer-events-auto"
             >
               {/* Header menu mobile */}
               <div className="flex items-center gap-2 px-4 pb-4 mb-2 border-b border-white/20">
@@ -171,7 +195,7 @@ const Navbar = () => {
                       e.preventDefault();
                       scrollToSection(item.href);
                     }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-white font-medium transition-all duration-300 ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-white font-medium transition-all duration-300 cursor-pointer ${
                       activeSection === item.href.substring(1)
                         ? 'bg-white/30'
                         : 'hover:bg-white/20'

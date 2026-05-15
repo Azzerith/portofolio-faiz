@@ -141,7 +141,7 @@ function App() {
       company: 'PT Ruangraya Indonesia · Remote',
       period: 'Sep 2024 – Dec 2024',
       icon: Code,
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-orange-500 to-amber-500',
       achievements: [
         'Developed an AI-powered Smart Home Energy Management System to analyze energy consumption from CSV data',
         'Integrated Hugging Face TAPAS model and built chatbot using Gemini API for real-time interaction'
@@ -153,7 +153,7 @@ function App() {
       company: 'PT GREEN WIND CULTURE',
       period: 'October 2025 – March 2026',
       icon: Sparkles,
-      color: 'from-purple-500 to-pink-500',
+      color: 'from-yellow-500 to-orange-500',
       achievements: [
         'Typesetting & Typography: Inserted translated Japanese text into panels, selectively choosing fonts and adjusting layouts based on the story\'s mood (tension, comedy, romance)',
         'Retouching, Redrawing & SFX: Erased original Korean text, seamlessly restored obscured backgrounds (cleaning), and artistically redesigned sound effects (SFX) into aesthetic Japanese characters'
