@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Code, Award, Briefcase, BookOpen, Home, User, Zap, Trophy } from 'lucide-react';
+import { Menu, X, Code, Briefcase, BookOpen, Home, User, Zap, Trophy } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,64 +9,61 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
 
   const navItems = [
-    { name: 'Home', href: '#home', icon: <Home size={18} /> },
-    { name: 'Skills', href: '#skills', icon: <Zap size={18} /> },
-    { name: 'Experience', href: '#experience', icon: <Briefcase size={18} /> },
-    { name: 'Awards', href: '#awards', icon: <Trophy size={18} /> },
-    { name: 'Projects', href: '#projects', icon: <Code size={18} /> },
-    { name: 'Education', href: '#achievements', icon: <BookOpen size={18} /> },
-    { name: 'Contact', href: '#contact', icon: <User size={18} /> },
+    { name: 'Home', href: '#home', icon: <Home size={15} /> },
+    { name: 'Skills', href: '#skills', icon: <Zap size={15} /> },
+    { name: 'Experience', href: '#experience', icon: <Briefcase size={15} /> },
+    { name: 'Awards', href: '#awards', icon: <Trophy size={15} /> },
+    { name: 'Projects', href: '#projects', icon: <Code size={15} /> },
+    { name: 'Education', href: '#achievements', icon: <BookOpen size={15} /> },
+    { name: 'Contact', href: '#contact', icon: <User size={15} /> },
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
+    const sectionIds = navItems.map((i) => i.href.substring(1));
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
       setScrolled(window.scrollY > 50);
+
+      const threshold = 140; // titik acuan tepat di bawah navbar
+      let current = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= threshold) current = id;
+      }
+
+      // Paksa section terakhir aktif saat sudah mentok di dasar halaman
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 2;
+      if (atBottom) current = sectionIds[sectionIds.length - 1];
+
+      setActiveSection(current);
     };
 
-    const options = {
-      root: null,
-      rootMargin: '-100px 0px -40% 0px',
-      threshold: 0
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
     };
 
-    const observerCallback = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, options);
-    
-    navItems.forEach(item => {
-      const element = document.getElementById(item.href.substring(1));
-      if (element) observer.observe(element);
-    });
-
-    // Observasi 'achievements' juga jika tidak ada di navItems utama (di sini sudah ada)
-    
-    window.addEventListener('scroll', handleScroll);
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollToSection = (href) => {
     setIsOpen(false);
-    const element = document.querySelector(href);
+    const id = href.substring(1);
+    const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      setActiveSection(id); // feedback instan, tidak menunggu scroll listener
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -95,13 +93,13 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
-                <Code size={22} className="text-amber-500" />
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                <Code size={18} className="text-amber-500" />
               </div>
-              <span className="text-white font-bold text-lg hidden lg:inline">Muhammad </span>
-              <span className="text-yellow-200 font-bold text-lg">Faiz </span>
-              <span className="text-white font-bold text-lg hidden xl:inline">Alfi Rahman</span>
-              <span className="text-white font-bold text-lg lg:hidden">F. </span>
+              <span className="text-white font-bold text-sm hidden lg:inline">Muhammad </span>
+              <span className="text-yellow-200 font-bold text-sm">Faiz </span>
+              <span className="text-white font-bold text-sm hidden xl:inline">Alfi Rahman</span>
+              <span className="text-white font-bold text-sm lg:hidden">F. </span>
             </motion.a>
 
             {/* Desktop Menu */}
@@ -114,10 +112,11 @@ const Navbar = () => {
                     e.preventDefault();
                     scrollToSection(item.href);
                   }}
-                  className={`relative px-3 lg:px-4 py-2 rounded-full text-white font-medium transition-all duration-300 flex items-center gap-1.5 lg:gap-2 cursor-pointer whitespace-nowrap ${
+                  title={item.name}
+                  className={`relative px-2.5 lg:px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                     activeSection === item.href.substring(1)
-                      ? 'bg-white/20 backdrop-blur-sm'
-                      : 'hover:bg-white/10'
+                      ? 'text-amber-700'
+                      : 'text-white hover:bg-white/10'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -125,24 +124,29 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  {item.icon}
-                  <span>{item.name}</span>
                   {activeSection === item.href.substring(1) && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute inset-0 rounded-full bg-white/20 -z-0"
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      className="absolute inset-0 rounded-full bg-white shadow-md -z-10"
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     />
                   )}
+                  <span className="relative z-10">{item.icon}</span>
+                  <span className="relative z-10 hidden lg:inline">{item.name}</span>
                 </motion.a>
               ))}
+
+              {/* Pemisah + toggle tema */}
+              <span className="w-px h-6 bg-white/30 mx-1 lg:mx-2" />
+              <ThemeToggle className="w-9 h-9 text-white hover:bg-white/15" />
             </div>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Hamburger Button - Floating di pojok kanan atas */}
-      <div className="fixed top-4 right-4 z-[100] md:hidden">
+      {/* Tombol Floating Mobile: toggle tema + hamburger */}
+      <div className="fixed top-4 right-4 z-[100] md:hidden flex items-center gap-2">
+        <ThemeToggle className="w-12 h-12 bg-gradient-to-r from-amber-500 to-amber-600 shadow-xl text-white border-2 border-white/20" size={22} />
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
           className="w-12 h-12 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 shadow-xl flex items-center justify-center text-white border-2 border-white/20"

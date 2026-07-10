@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Video, FileText, Maximize2, Code } from 'lucide-react';
-import ScrollAnimation from './ScrollAnimation';
 import ImageModal from './ImageModal';
+import LazyImage from './LazyImage';
 
 const TechIcon = ({ name }) => {
   const iconMap = {
@@ -59,7 +59,7 @@ const ProjectCard = ({ project, index }) => {
     >
       <div className="glass-card p-6 hover:shadow-2xl transition-all duration-300 group">
         <div className="flex justify-between items-start flex-wrap gap-2 mb-3">
-          <h3 className="text-xl font-bold text-gray-800">{project.title}</h3>
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white">{project.title}</h3>
           {project.badge && (
             <span className="bg-gradient-to-r from-amber-400 to-amber-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
               {project.badge}
@@ -67,7 +67,7 @@ const ProjectCard = ({ project, index }) => {
           )}
         </div>
         
-        <p className="text-gray-600 mt-2 leading-relaxed">{project.description}</p>
+        <p className="text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">{project.description}</p>
         
         {/* Tech Stack */}
         <div className="flex flex-wrap gap-2 my-4">
@@ -88,9 +88,9 @@ const ProjectCard = ({ project, index }) => {
               whileHover={{ scale: 1.02, zIndex: 10 }}
               onClick={() => openModal(idx)}
             >
-              <img 
-                src={`./${img}`} 
-                className="w-full h-full object-cover" 
+              <LazyImage
+                src={`./${img}`}
+                className="w-full h-full"
                 alt={`${project.title} preview`}
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-all duration-300 flex items-center justify-center">
@@ -105,7 +105,7 @@ const ProjectCard = ({ project, index }) => {
         <div className="mt-5 flex gap-4 flex-wrap">
           {project.github && (
             <a href={project.github} target="_blank" 
-               className="text-gray-700 hover:text-gray-900 flex items-center gap-1 text-sm transition-all hover:gap-2">
+               className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 text-sm transition-all hover:gap-2">
               <i className="fab fa-github"></i> Repository
             </a>
           )}

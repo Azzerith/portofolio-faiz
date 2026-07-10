@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Heart, Code, Award, Briefcase, ChevronUp } from 'lucide-react';
+import { Mail, Phone, MapPin, Heart, Code, ChevronUp } from 'lucide-react';
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -28,7 +28,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 text-white mt-20">
+    <footer className="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 text-white mt-20">
       {/* Tombol Scroll to Top */}
       <motion.button
         onClick={scrollToTop}

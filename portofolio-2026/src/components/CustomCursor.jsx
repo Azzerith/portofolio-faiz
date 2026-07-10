@@ -1,134 +1,77 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [cursorVariant, setCursorVariant] = useState('default');
   const [isMobile, setIsMobile] = useState(false);
-  
+  const [isHover, setIsHover] = useState(false);
+
+  // Posisi cursor disimpan di motion value → TIDAK memicu re-render React tiap mousemove
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+
+  const arrowX = useSpring(cursorX, { mass: 0.3, stiffness: 800, damping: 25 });
+  const arrowY = useSpring(cursorY, { mass: 0.3, stiffness: 800, damping: 25 });
+  const dotX = useSpring(cursorX, { mass: 0.1, stiffness: 1000, damping: 20 });
+  const dotY = useSpring(cursorY, { mass: 0.1, stiffness: 1000, damping: 20 });
+
   useEffect(() => {
-    // Cek apakah device mobile
     const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
     };
-    
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
+
   useEffect(() => {
     if (isMobile) return;
-    
+
     const onMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
-    
+
+    // Deteksi hover di-throttle dengan rAF + hanya set state saat nilainya berubah
+    let raf = 0;
+    let pendingTarget = null;
     const onMouseOver = (e) => {
-      const target = e.target;
-      if (
-        target.closest('a') || 
-        target.closest('button') || 
-        target.closest('.tech-badge') ||
-        target.closest('.glass-card') ||
-        target.closest('img') ||
-        target.closest('.project-card') ||
-        target.closest('svg') ||
-        target.closest('a *')  // Semua child dari link
-      ) {
-        setCursorVariant('hover');
-      } else {
-        setCursorVariant('default');
-      }
+      pendingTarget = e.target;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const hover = !!pendingTarget?.closest?.(
+          'a,button,img,svg,.tech-badge,.glass-card,.project-card,[role="button"]'
+        );
+        setIsHover((prev) => (prev === hover ? prev : hover));
+      });
     };
-    
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseover', onMouseOver);
-    
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mouseover', onMouseOver, { passive: true });
+
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseover', onMouseOver);
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, [isMobile]);
-  
-  const variants = {
-    default: {
-      x: mousePosition.x - 4,
-      y: mousePosition.y - 4,
-      scale: 1,
-    },
-    hover: {
-      x: mousePosition.x - 6,
-      y: mousePosition.y - 6,
-      scale: 1.2,
-    }
-  };
-  
+  }, [isMobile, cursorX, cursorY]);
+
   // Jangan render cursor di mobile
   if (isMobile) return null;
-  
+
   return (
     <>
-      {/* Style global untuk menyembunyikan semua cursor default */}
+      {/* Sembunyikan cursor default */}
       <style id="cursor-style">
-        {`
-          *,
-          *::before,
-          *::after,
-          html,
-          body,
-          div,
-          span,
-          a,
-          button,
-          input,
-          textarea,
-          select,
-          label,
-          img,
-          svg,
-          path,
-          circle,
-          polygon,
-          .tech-badge,
-          .glass-card,
-          .project-card,
-          [role="button"],
-          [type="button"],
-          [type="submit"],
-          [type="reset"],
-          [type="file"] {
-            cursor: none !important;
-          }
-          
-          /* Khusus untuk elemen yang butuh interaksi */
-          a:hover,
-          button:hover,
-          .tech-badge:hover,
-          .glass-card:hover,
-          img:hover,
-          [role="button"]:hover {
-            cursor: none !important;
-          }
-        `}
+        {`* { cursor: none !important; }`}
       </style>
-      
+
       {/* Main cursor runcing */}
       <motion.div
-        className="fixed pointer-events-none z-[200]"
-        variants={variants}
-        animate={cursorVariant}
-        transition={{
-          type: "spring",
-          mass: 0.3,
-          stiffness: 800,
-          damping: 25
-        }}
-        style={{
-          filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
-        }}
+        className="fixed top-0 left-0 pointer-events-none z-[200]"
+        style={{ x: arrowX, y: arrowY, marginLeft: -6, marginTop: -6, filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))' }}
+        animate={{ scale: isHover ? 1.2 : 1 }}
+        transition={{ type: 'spring', mass: 0.3, stiffness: 800, damping: 25 }}
       >
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <defs>
@@ -145,8 +88,8 @@ const CustomCursor = () => {
             </filter>
           </defs>
           {/* Pointer panah runcing */}
-          <polygon 
-            points="4,4 22,12 12,14 10,24" 
+          <polygon
+            points="4,4 22,12 12,14 10,24"
             fill="url(#cursorGrad)"
             filter="url(#cursorGlow)"
             stroke="#FFFFFF"
@@ -154,9 +97,9 @@ const CustomCursor = () => {
             strokeLinejoin="round"
           />
           {/* Inner highlight */}
-          <polygon 
-            points="7,7 18,12 11,13 10,19" 
-            fill="#FDE68A" 
+          <polygon
+            points="7,7 18,12 11,13 10,19"
+            fill="#FDE68A"
             opacity="0.5"
           />
           {/* Ujung bercahaya */}
@@ -166,22 +109,13 @@ const CustomCursor = () => {
           </circle>
         </svg>
       </motion.div>
-      
+
       {/* Inner dot untuk presisi */}
       <motion.div
-        className="fixed pointer-events-none z-[201]"
-        animate={{
-          x: mousePosition.x - 1.5,
-          y: mousePosition.y - 1.5,
-        }}
-        transition={{
-          type: "spring",
-          mass: 0.1,
-          stiffness: 1000,
-          damping: 20
-        }}
+        className="fixed top-0 left-0 pointer-events-none z-[201]"
+        style={{ x: dotX, y: dotY, marginLeft: -1.5, marginTop: -1.5 }}
       >
-        <div 
+        <div
           className="w-1 h-1 rounded-full"
           style={{
             backgroundColor: '#FFFFFF',
@@ -189,17 +123,14 @@ const CustomCursor = () => {
           }}
         />
       </motion.div>
-      
+
       {/* Efek lingkaran magis saat hover */}
-      {cursorVariant === 'hover' && (
+      {isHover && (
         <motion.div
-          className="fixed pointer-events-none z-[198]"
-          animate={{
-            x: mousePosition.x - 18,
-            y: mousePosition.y - 18,
-            rotate: [0, 360],
-          }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          className="fixed top-0 left-0 pointer-events-none z-[198]"
+          style={{ x: arrowX, y: arrowY, marginLeft: -18, marginTop: -18 }}
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
         >
           <svg width="36" height="36" viewBox="0 0 36 36">
             <circle cx="18" cy="18" r="10" stroke="#F59E0B" strokeWidth="1" fill="none" opacity="0.5">

@@ -1,16 +1,22 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import ParticleBackground from './components/ParticleBackground';
+import AnimatedBackground from './components/AnimatedBackground';
 import CustomCursor from './components/CustomCursor';
+import LazyImage from './components/LazyImage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProfileCard from './components/ProfileCard';
 import ScrollAnimation from './components/ScrollAnimation';
 import ProjectCard from './components/ProjectCard';
-import AwardCard from './components/AwardCard';
-import { Code, Briefcase, Calendar, Users, BookOpen, CheckCircle, Zap, Cpu, TrendingUp, ExternalLink, Mail, Star, Trophy, Sparkles, Award, Clock } from 'lucide-react';
+import ExperienceTimeline from './components/ExperienceTimeline';
+import TypingText from './components/TypingText';
+import { Code, Users, BookOpen, CheckCircle, Zap, Cpu, TrendingUp, ExternalLink, Mail, Star, Trophy, Sparkles, Award, Clock } from 'lucide-react';
+
+const HERO_TITLES = ['Full-Stack Web Developer', 'Graphic Designer'];
+import { useTheme } from './hooks/useTheme';
 
 function App() {
+  const { theme } = useTheme();
   const tpqImages = ['tpq1.png', 'tpq2.png', 'tpq3.png', 'tpq4.png'];
   const faImages = ['fa1.png', 'fa2.png', 'fa3.png', 'fa4.png', 'fa5.png'];
   const rgImages = ['rg1.png', 'rg2.png', 'rg3.png', 'rg4.png', 'rg5.png'];
@@ -106,12 +112,14 @@ function App() {
   const [activeStep, setActiveStep] = useState(0);
   const [activeAward, setActiveAward] = useState(-1);
 
-  // Scroll-based background color change
+  // Scroll-based background color change (mengikuti tema)
   const { scrollYProgress } = useScroll();
   const bgColor = useTransform(
     scrollYProgress,
     [0, 0.3, 0.5, 0.7, 0.9],
-    ['#ffffff', '#fef3c7', '#fed7aa', '#fef3c7', '#ffffff']
+    theme === 'dark'
+      ? ['#0f172a', '#1c1917', '#231a0d', '#1c1917', '#0f172a']
+      : ['#ffffff', '#fef3c7', '#fed7aa', '#fef3c7', '#ffffff']
   );
 
   // Intersection Observer untuk step animation
@@ -170,27 +178,36 @@ function App() {
     >
       <CustomCursor />
       <Navbar />
-      <ParticleBackground />
-      <div className="pattern-overlay"></div>
-      
+      <AnimatedBackground />
+
       <div className="relative z-10 max-w-7xl mx-auto px-5 py-6 md:py-10">
         {/* Hero Section dengan Profile Card */}
-        <section id="home" className="scroll-mt-20">
-          <div className="flex flex-col lg:flex-row gap-12 items-center justify-center mb-20 pt-16 md:pt-20">
+        <section id="home" className="scroll-mt-20 min-h-[100svh] flex items-start pt-24 md:pt-28 pb-8">
+          <div className="w-full flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
             <ProfileCard photo="me.jpg" photoFallback="me2.png" />
-            
+
             <ScrollAnimation direction="right" delay={0.3}>
               <div className="text-center lg:text-left max-w-xl">
-                <motion.h1 
-                  className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-800 via-amber-600 to-yellow-800 bg-clip-text text-transparent"
+                {/* Tinggi tetap 2 baris + teks rata bawah → gap ke deskripsi rapat & tanpa geser */}
+                <motion.h1
+                  className="text-4xl md:text-5xl font-black tracking-tight leading-[1.15] min-h-[2.3em] flex items-end justify-center lg:justify-start"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.6 }}
                 >
-                  Full-Stack Web Developer & Graphic Designer
+                  <span className="block w-full">
+                    <TypingText
+                      texts={HERO_TITLES}
+                      typeSpeed={65}
+                      deleteSpeed={38}
+                      pause={1600}
+                      startDelay={600}
+                      className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 dark:from-amber-300 dark:via-amber-400 dark:to-amber-300 bg-clip-text text-transparent"
+                    />
+                  </span>
                 </motion.h1>
-                <motion.p 
-                  className="text-gray-600 text-lg mt-4 leading-relaxed"
+                <motion.p
+                  className="text-gray-600 dark:text-gray-300 text-lg mt-3 leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
@@ -204,14 +221,14 @@ function App() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  <div className="bg-amber-100 px-5 py-2 rounded-full text-amber-700 font-semibold flex items-center gap-2">
-                    <Zap size={18}/> Fast Learner
+                  <div className="bg-white/70 dark:bg-slate-900/60 backdrop-blur-md ring-1 ring-white/60 dark:ring-white/10 shadow-lg px-5 py-2 rounded-full text-amber-700 dark:text-amber-300 font-semibold flex items-center gap-2">
+                    <Zap size={18} className="text-amber-500"/> Fast Learner
                   </div>
-                  <div className="bg-blue-100 px-5 py-2 rounded-full text-blue-700 font-semibold flex items-center gap-2">
-                    <Cpu size={18}/> Problem Solver
+                  <div className="bg-white/70 dark:bg-slate-900/60 backdrop-blur-md ring-1 ring-white/60 dark:ring-white/10 shadow-lg px-5 py-2 rounded-full text-blue-600 dark:text-blue-300 font-semibold flex items-center gap-2">
+                    <Cpu size={18} className="text-blue-500"/> Problem Solver
                   </div>
-                  <div className="bg-purple-100 px-5 py-2 rounded-full text-purple-700 font-semibold flex items-center gap-2">
-                    <TrendingUp size={18}/> 3.87 GPA
+                  <div className="bg-white/70 dark:bg-slate-900/60 backdrop-blur-md ring-1 ring-white/60 dark:ring-white/10 shadow-lg px-5 py-2 rounded-full text-purple-600 dark:text-purple-300 font-semibold flex items-center gap-2">
+                    <TrendingUp size={18} className="text-purple-500"/> 3.87 GPA
                   </div>
                 </motion.div>
               </div>
@@ -234,7 +251,7 @@ function App() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.03 }}
-                    className="tech-badge bg-white border border-gray-200 shadow-sm px-5 py-2.5 hover:shadow-md hover:scale-105 transition-all cursor-default"
+                    className="tech-badge bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm px-5 py-2.5 hover:shadow-md hover:scale-105 transition-all cursor-default"
                   >
                     <span className="text-lg">
                       {skill === 'Golang' && <i className="fab fa-golang text-[#00ADD8]"></i>}
@@ -275,110 +292,8 @@ function App() {
               <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
             </motion.div>
 
-            {/* Timeline */}
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-amber-300 via-orange-400 to-amber-300 rounded-full hidden md:block"></div>
-              
-              {experiences.map((exp, idx) => (
-                <motion.div
-                  key={idx}
-                  data-step={idx}
-                  className={`experience-step relative mb-16 ${idx % 2 === 0 ? 'md:pr-[50%]' : 'md:pl-[50%] md:mt-[-80px]'}`}
-                  initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: idx * 0.2 }}
-                  viewport={{ once: false, amount: 0.3 }}
-                >
-                  {/* Timeline Dot */}
-                  <motion.div 
-                    className={`absolute top-0 ${idx % 2 === 0 ? 'md:right-[-8px]' : 'md:left-[-8px]'} hidden md:flex items-center justify-center w-4 h-4 rounded-full bg-gradient-to-r ${exp.color} shadow-lg`}
-                    animate={{
-                      scale: activeStep === idx ? [1, 1.5, 1] : 1,
-                      boxShadow: activeStep === idx ? '0 0 20px rgba(245, 158, 11, 0.6)' : '0 0 0px rgba(245, 158, 11, 0)'
-                    }}
-                    transition={{ duration: 1, repeat: activeStep === idx ? Infinity : 0 }}
-                  >
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </motion.div>
-
-                  {/* Content Card */}
-                  <motion.div 
-                    className={`bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 ${
-                      activeStep === idx ? 'scale-[1.02]' : ''
-                    }`}
-                    whileHover={{ y: -5 }}
-                  >
-                    {/* Header dengan gradient */}
-                    <div className={`bg-gradient-to-r ${exp.color} p-6 text-white`}>
-                      <div className="flex items-center gap-3 mb-2">
-                        <exp.icon size={28} />
-                        <h3 className="text-2xl font-bold">{exp.title}</h3>
-                      </div>
-                      <p className="text-white text-opacity-90 flex items-center gap-2">
-                        <Briefcase size={16} /> {exp.company}
-                      </p>
-                      <p className="text-white text-opacity-75 flex items-center gap-2 mt-1">
-                        <Calendar size={14} /> {exp.period}
-                      </p>
-                    </div>
-
-                    {/* Content Body */}
-                    <div className="p-6">
-
-                      {/* Achievements */}
-                      <div className="space-y-3 mb-6">
-                        {exp.achievements.map((achievement, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 + i * 0.1 }}
-                            className="flex items-start gap-3"
-                          >
-                            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <CheckCircle size={14} className="text-green-600" />
-                            </div>
-                            <p className="text-gray-700 text-sm">{achievement}</p>
-                          </motion.div>
-                        ))}
-                      </div>
-
-                      {/* Image Gallery */}
-                      {exp.images && exp.images.length > 0 && (
-                        <motion.div 
-                          className="grid grid-cols-3 gap-2"
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.5 }}
-                        >
-                          {exp.images.map((img, idx) => (
-                            <motion.img
-                              key={idx}
-                              src={`./${img}`}
-                              className="w-full h-24 rounded-lg object-cover shadow-md hover:shadow-xl transition-all cursor-pointer"
-                              alt="project"
-                              whileHover={{ scale: 1.05 }}
-                              transition={{ duration: 0.2 }}
-                            />
-                          ))}
-                        </motion.div>
-                      )}
-                    </div>
-
-                    {/* Progress indicator */}
-                    {activeStep === idx && (
-                      <motion.div 
-                        className="h-1 bg-gradient-to-r from-amber-400 to-orange-500"
-                        initial={{ width: 0 }}
-                        animate={{ width: '100%' }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                      />
-                    )}
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
+            {/* Roadmap: jalan berkelok dengan pin lokasi */}
+            <ExperienceTimeline experiences={experiences} activeStep={activeStep} />
           </div>
         </section>
 
@@ -394,7 +309,7 @@ function App() {
               Awards & Achievements
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
-            <p className="text-gray-600 mt-3">Recognitions that highlight my dedication and excellence</p>
+            <p className="text-gray-600 dark:text-gray-300 mt-3">Recognitions that highlight my dedication and excellence</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -407,7 +322,7 @@ function App() {
                   initial={{ opacity: 0, y: 50, rotateY: -10 }}
                   whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  viewport={{ once: false, amount: 0.2 }}
+                  viewport={{ once: true, amount: 0.2 }}
                   whileHover={{ 
                     y: -10,
                     transition: { duration: 0.2 }
@@ -417,7 +332,7 @@ function App() {
                 >
                   <div className={`absolute inset-0 bg-gradient-to-r ${award.color} rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`}></div>
                   
-                  <div className={`relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden ${
+                  <div className={`relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden ${
                     activeAward === idx ? 'scale-105' : ''
                   }`}>
                     {/* Animated Background */}
@@ -454,8 +369,8 @@ function App() {
                         <IconComponent size={24} className="text-white" />
                       </motion.div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-lg text-gray-800">{award.title}</h3>
-                        <p className="text-gray-500 text-sm">{award.event}</p>
+                        <h3 className="font-bold text-lg text-gray-800 dark:text-white">{award.title}</h3>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">{award.event}</p>
                       </div>
                     </div>
 
@@ -489,10 +404,11 @@ function App() {
                         whileInView={{ opacity: 1, height: 'auto' }}
                         transition={{ delay: 0.2 }}
                       >
-                        <img 
-                          src={`./${award.images[0]}`} 
+                        <LazyImage
+                          src={`./${award.images[0]}`}
                           alt={award.title}
-                          className="w-full h-32 object-cover rounded-xl hover:scale-105 transition-transform duration-300"
+                          className="w-full h-32 rounded-xl"
+                          imgClassName="hover:scale-105 transition-transform duration-300"
                         />
                       </motion.div>
                     )}
@@ -517,7 +433,7 @@ function App() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-12 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 shadow-lg"
+            className="mt-12 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl p-8 shadow-lg"
           >
             <h3 className="font-bold text-2xl flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
@@ -526,8 +442,8 @@ function App() {
               Leadership & Organization
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                className="bg-white rounded-xl p-5 shadow-md hover:shadow-xl transition-all"
+              <motion.div
+                className="bg-white dark:bg-slate-700 rounded-xl p-5 shadow-md hover:shadow-xl transition-all"
                 whileHover={{ x: 5 }}
               >
                 <div className="flex items-center gap-3 mb-3">
@@ -536,11 +452,11 @@ function App() {
                   </div>
                   <h4 className="font-semibold text-lg">Chairman - UKM LDK IMAM</h4>
                 </div>
-                <p className="text-sm text-gray-500 mb-2">Nov 2023 – Oct 2024</p>
-                <p className="text-gray-600 text-sm">Led organization operations, managed cross-division collaboration, organized campus-scale events.</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Nov 2023 – Oct 2024</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Led organization operations, managed cross-division collaboration, organized campus-scale events.</p>
               </motion.div>
-              <motion.div 
-                className="bg-white rounded-xl p-5 shadow-md hover:shadow-xl transition-all"
+              <motion.div
+                className="bg-white dark:bg-slate-700 rounded-xl p-5 shadow-md hover:shadow-xl transition-all"
                 whileHover={{ x: 5 }}
               >
                 <div className="flex items-center gap-3 mb-3">
@@ -549,8 +465,8 @@ function App() {
                   </div>
                   <h4 className="font-semibold text-lg">Multimedia Coordinator</h4>
                 </div>
-                <p className="text-sm text-gray-500 mb-2">Forum Asisten Praktikum · Aug 2024 – Aug 2025</p>
-                <p className="text-gray-600 text-sm">Coordinated multimedia content creation and managed visual communications.</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Forum Asisten Praktikum · Aug 2024 – Aug 2025</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Coordinated multimedia content creation and managed visual communications.</p>
               </motion.div>
             </div>
           </motion.div>
@@ -577,9 +493,9 @@ function App() {
                   <BookOpen size={22}/> Education
                 </h3>
                 <p className="font-semibold mt-3 text-lg">Universitas AMIKOM Purwokerto</p>
-                <p className="text-gray-600">Bachelor of Information Systems</p>
-                <p className="text-gray-500 text-sm mt-1">Jul 2022 – Apr 2026</p>
-                <p className="text-amber-700 font-bold mt-2 text-xl">GPA: 3.87/4.00</p>
+                <p className="text-gray-600 dark:text-gray-300">Bachelor of Information Systems</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Jul 2022 – Apr 2026</p>
+                <p className="text-amber-700 dark:text-amber-400 font-bold mt-2 text-xl">GPA: 3.87/4.00</p>
               </div>
             </ScrollAnimation>
 
@@ -589,8 +505,8 @@ function App() {
                   <CheckCircle size={22}/> Certification
                 </h3>
                 <p className="font-semibold mt-3">Fullstack Web Development MSIB Batch 7</p>
-                <p className="text-gray-600 text-sm">PT Ruangraya Indonesia · Sep 2024 – Dec 2024</p>
-                <p className="text-gray-500 text-sm mt-2">Built fullstack applications using Golang & React, developed RESTful APIs and frontend integrations.</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">PT Ruangraya Indonesia · Sep 2024 – Dec 2024</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Built fullstack applications using Golang & React, developed RESTful APIs and frontend integrations.</p>
                 <a href="https://s.id/watQk" target="_blank" 
                    className="text-amber-600 text-sm flex items-center gap-1 mt-3 hover:underline inline-flex group">
                   <ExternalLink size={14} className="group-hover:translate-x-1 transition"/> View Certificate
@@ -604,13 +520,13 @@ function App() {
         <section id="contact" className="scroll-mt-20">
           <div className="text-center py-8">
             <motion.div 
-              className="inline-flex items-center gap-2 bg-amber-100 px-6 py-3 rounded-full"
+              className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-500/15 px-6 py-3 rounded-full"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
             >
-              <Mail size={18} className="text-amber-600" />
-              <span className="text-amber-700 font-medium">zikazabat@gmail.com</span>
+              <Mail size={18} className="text-amber-600 dark:text-amber-400" />
+              <span className="text-amber-700 dark:text-amber-300 font-medium">zikazabat@gmail.com</span>
             </motion.div>
           </div>
         </section>
