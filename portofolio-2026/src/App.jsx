@@ -116,7 +116,45 @@ function App() {
     }
   ];
 
-  const skills = ['Golang', 'React', 'Tailwind', 'MySQL', 'Gin', 'JavaScript', 'Git', 'REST API', 'HTML/CSS', 'Adobe Photoshop', 'Adobe Illustrator', 'Capcut Windows', 'Ibis Paint X Android', 'Canva'];
+  // Brand logo (SVG) di public/skills, atau ikon Font Awesome untuk yang tak berlogo.
+  // `dark`: ikon gelap → dibalik jadi terang di dark mode. `wordmark`: logo sudah memuat nama.
+  const skills = [
+    // Bahasa
+    { name: 'JavaScript', img: 'javascript.svg' },
+    { name: 'TypeScript', img: 'typescript.svg' },
+    { name: 'Python', img: 'python.svg' },
+    { name: 'PHP', img: 'php.svg' },
+    { name: 'Go', img: 'go.svg' },
+    { name: 'Java', img: 'java.svg' },
+    { name: 'C++', img: 'cpp.svg' },
+    { name: 'Dart', img: 'dart.svg' },
+    { name: 'HTML5', img: 'html5.svg' },
+    { name: 'CSS3', img: 'css.svg' },
+    // Framework & Library
+    { name: 'React', img: 'react.svg' },
+    { name: 'Next.js', img: 'nextjs.svg', dark: true },
+    { name: 'Laravel', img: 'laravel.svg' },
+    { name: 'Node.js', img: 'nodejs.svg' },
+    { name: 'Vue.js', img: 'vue.svg' },
+    { name: 'Tailwind CSS', img: 'tailwind.svg' },
+    { name: 'Bootstrap', img: 'bootstrap.svg' },
+    { name: 'Vite', img: 'vite.svg' },
+    // Database & Tools
+    { name: 'MySQL', img: 'mysql.svg' },
+    { name: 'PostgreSQL', img: 'postgresql.svg' },
+    { name: 'MongoDB', img: 'mongodb.svg' },
+    { name: 'Git', img: 'git.svg' },
+    { name: 'GitHub', img: 'github.svg', dark: true },
+    { name: 'Docker', img: 'docker.svg' },
+    { name: 'REST API', fa: 'fas fa-plug', color: '#10B981' },
+    { name: 'AI-Assisted Dev', fa: 'fas fa-robot', color: '#8B5CF6' },
+    // Desain
+    { name: 'Adobe Photoshop', img: 'photoshop.svg' },
+    { name: 'Adobe Illustrator', img: 'illustrator.svg' },
+    { name: 'Canva', img: 'canva.svg' },
+    { name: 'CapCut', img: 'capcut.svg', dark: true, wordmark: true },
+    { name: 'Ibis Paint X', fa: 'fas fa-paint-brush', color: '#3B82F6' },
+  ];
 
   // Refs untuk scroll animations
   const experienceRef = useRef(null);
@@ -275,29 +313,24 @@ function App() {
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill, i) => (
                   <motion.div
-                    key={skill}
+                    key={skill.name}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: i * 0.03 }}
-                    className="tech-badge bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm px-5 py-2.5 hover:shadow-md hover:scale-105 transition-all cursor-default"
+                    transition={{ delay: i * 0.02 }}
+                    className="tech-badge bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm px-5 py-2.5 hover:shadow-md hover:scale-105 transition-all cursor-default flex items-center"
+                    title={skill.name}
                   >
-                    <span className="text-lg">
-                      {skill === 'Golang' && <i className="fab fa-golang text-[#00ADD8]"></i>}
-                      {skill === 'React' && <i className="fab fa-react text-[#61DAFB]"></i>}
-                      {skill === 'Tailwind' && <i className="fab fa-css3-alt text-[#06B6D4]"></i>}
-                      {skill === 'MySQL' && <i className="fas fa-database text-[#4479A1]"></i>}
-                      {skill === 'Gin' && <i className="fas fa-code-branch text-[#00ADD8]"></i>}
-                      {skill === 'JavaScript' && <i className="fab fa-js text-[#F7DF1E]"></i>}
-                      {skill === 'Git' && <i className="fab fa-git-alt text-[#F05032]"></i>}
-                      {skill === 'REST API' && <i className="fas fa-plug text-[#4CAF50]"></i>}
-                      {skill === 'HTML/CSS' && <i className="fab fa-html5 text-[#E34F26]"></i>}
-                      {skill === 'Adobe Photoshop' && <i className="fas fa-palette text-[#31A8FF]"></i>}
-                      {skill === 'Adobe Illustrator' && <i className="fas fa-pen-nib text-[#FF9A00]"></i>}
-                      {skill === 'Capcut Windows' && <i className="fas fa-video text-gray-800"></i>}
-                      {skill === 'Ibis Paint X Android' && <i className="fas fa-paint-brush text-blue-500"></i>}
-                      {skill === 'Canva' && <i className="fas fa-object-group text-[#00C4CC]"></i>}
-                    </span>
-                    <span className="ml-2">{skill}</span>
+                    {skill.img ? (
+                      <img
+                        src={`./skills/${skill.img}`}
+                        alt={skill.name}
+                        loading="lazy"
+                        className={`h-5 w-auto max-w-[110px] object-contain ${skill.dark ? 'dark:invert' : ''}`}
+                      />
+                    ) : (
+                      <span className="text-lg leading-none"><i className={skill.fa} style={{ color: skill.color }}></i></span>
+                    )}
+                    {!skill.wordmark && <span className="ml-2">{skill.name}</span>}
                   </motion.div>
                 ))}
               </div>
