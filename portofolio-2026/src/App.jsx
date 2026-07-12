@@ -25,6 +25,16 @@ function App() {
 
   const projects = [
     {
+      title: 'Enterprise ERP — HRIS & Warehouse Management System (WMS)',
+      description: 'Full-stack engineer on a large Go microservices + Next.js ERP for a pharmaceutical manufacturer. Scaffolded and owned the WMS/Manufacture module (~11 menus, ~60 REST endpoints) covering master data, stock ledger, inbound/outbound, production, purchase orders, and marketplace resi integration with TikTok & Shopee schedulers. Also built two HRIS features end-to-end — Attendance Correction and Shift/Day Exchange — each with multi-level SPV–HR approval workflows. 200+ commits across backend & frontend in the first two months.',
+      badge: '200+ Commits',
+      techStack: ['Golang', 'Next.js', 'MongoDB', 'Docker', 'REST API'],
+      images: ['erp1.png', 'erp2.png', 'erp3.png', 'erp4.png'],
+      github: null,
+      demo: null,
+      docs: null
+    },
+    {
       title: 'Zona Belajar — Online Tryout & E-Learning Platform',
       description: 'Rebuilt a tryout & e-learning platform into two Laravel 11 apps (admin panel + student app) sharing one MySQL database. Section-based timed exams with auto-grading, per-section rankings & report breakdowns, learning materials, practice sets, student report cards, AI-assisted PDF question import, and one-click PDF exports — shipped to production with CI/CD auto-deploy.',
       badge: 'Live Production',
@@ -233,6 +243,20 @@ function App() {
         'Hardened authentication: OTP email verification that leaves no half-created accounts, expiring password reset, and a real-time "awaiting activation" page that auto-logs users in once an admin approves them'
       ],
       images: zbImages.slice(0, 3)
+    },
+    {
+      title: 'Full-Stack Developer (Full-time)',
+      company: 'PT Bharata Internasional Pharmaceutical · On-site (WFO)',
+      period: 'Jun 2026 – Present',
+      icon: Cpu,
+      logo: 'logo-bharata.png',
+      color: 'from-emerald-500 to-teal-600',
+      achievements: [
+        'Full-time on-site engineer on a Go microservices + Next.js ERP; shipped 200+ commits across the backend (bip-erp) and frontend (erp-frontend) within the first two months',
+        'Built the Attendance Correction feature end-to-end — scaffolded the attendance service from scratch: 6 REST endpoints and 2 UI pages with multi-level SPV–HR approval routing, an H-7 correction window, and anti-fraud validation',
+        'Built the Shift/Day Exchange feature — 6 endpoints and 2 pages with calendar-based scheduling, eligibility validation, and multi-level approvals including a partner-consent flow',
+        'Owned the entire WMS / Manufacture module — scaffolded the service and delivered ~11 menus and ~60 endpoints spanning master data, stock ledger, inbound/outbound, production, purchase orders, and marketplace resi integration (TikTok & Shopee schedulers)'
+      ]
     }
   ];
 
