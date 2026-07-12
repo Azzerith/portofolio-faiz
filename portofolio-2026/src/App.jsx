@@ -302,8 +302,8 @@ function App() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  Specializing in <span className="font-semibold text-amber-600">Golang</span> and <span className="font-semibold text-blue-500">React</span> with hands-on experience building scalable web applications and RESTful APIs.
-                  Also passionate about visual storytelling and <span className="font-semibold text-pink-500">Graphic Design</span>, blending technical programming skills with creative expertise in digital illustration and webtoon typesetting.
+                  Full-time <span className="font-semibold text-emerald-600">Full-Stack Developer</span> at PT Bharata Internasional, building enterprise ERP systems with <span className="font-semibold text-amber-600">Golang</span> microservices and <span className="font-semibold text-blue-500">Next.js</span> — from HRIS workflows to a full Warehouse Management System, with 200+ commits shipped in two months.
+                  Also passionate about visual storytelling and <span className="font-semibold text-pink-500">Graphic Design</span>, blending engineering with creative expertise in digital illustration and webtoon typesetting.
                 </motion.p>
                 <motion.div 
                   className="flex flex-wrap gap-3 mt-6 justify-center lg:justify-start"
