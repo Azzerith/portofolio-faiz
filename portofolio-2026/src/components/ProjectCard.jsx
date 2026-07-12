@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Video, FileText, Maximize2, Code } from 'lucide-react';
+import { Video, FileText, Maximize2, Code, Globe } from 'lucide-react';
 import ImageModal from './ImageModal';
 import LazyImage from './LazyImage';
 
@@ -14,6 +14,9 @@ const TechIcon = ({ name }) => {
     'JavaScript': <i className="fab fa-js text-[#F7DF1E] text-xl"></i>,
     'Git': <i className="fab fa-git-alt text-[#F05032] text-xl"></i>,
     'Gemini API': <i className="fas fa-robot text-[#4285F4] text-xl"></i>,
+    'Laravel': <i className="fab fa-laravel text-[#FF2D20] text-xl"></i>,
+    'PHP': <i className="fab fa-php text-[#777BB4] text-xl"></i>,
+    'Alpine.js': <i className="fas fa-bolt text-[#8BC0D0] text-xl"></i>,
   };
   return iconMap[name] || <Code size={20} className="text-gray-500" />;
 };
@@ -103,6 +106,12 @@ const ProjectCard = ({ project, index }) => {
         
         {/* Links */}
         <div className="mt-5 flex gap-4 flex-wrap">
+          {project.live && (
+            <a href={project.live} target="_blank"
+               className="text-blue-500 hover:text-blue-600 flex items-center gap-1 text-sm transition-all hover:gap-2">
+              <Globe size={16}/> Live Site
+            </a>
+          )}
           {project.github && (
             <a href={project.github} target="_blank" 
                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 text-sm transition-all hover:gap-2">

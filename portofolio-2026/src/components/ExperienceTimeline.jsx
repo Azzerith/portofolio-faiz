@@ -70,9 +70,18 @@ const TimelineRow = ({ exp, idx, activeStep, last }) => {
             </span>
 
             <div className="relative p-5">
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full text-white shadow" style={{ backgroundColor: color }}>
-                <Calendar size={12} /> {exp.period}
-              </span>
+              <div className="flex items-center justify-between gap-3">
+                {exp.logo ? (
+                  <img src={`./${exp.logo}`} alt={exp.company} className="h-7 md:h-8 w-auto max-w-[150px] object-contain object-left dark:brightness-0 dark:invert" />
+                ) : (
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center shadow-sm shrink-0" style={{ backgroundColor: color }}>
+                    <exp.icon size={18} className="text-white" />
+                  </div>
+                )}
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full text-white shadow shrink-0" style={{ backgroundColor: color }}>
+                  <Calendar size={12} /> {exp.period}
+                </span>
+              </div>
               <h3 className="mt-3 text-lg md:text-xl font-bold text-gray-800 dark:text-white leading-snug">
                 {exp.title}
               </h3>

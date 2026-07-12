@@ -21,8 +21,20 @@ function App() {
   const faImages = ['fa1.png', 'fa2.png', 'fa3.png', 'fa4.png', 'fa5.png'];
   const rgImages = ['rg1.png', 'rg2.png', 'rg3.png', 'rg4.png', 'rg5.png'];
   const tsImages = ['ts1.png', 'ts2.png', 'ts3.png'];
+  const zbImages = ['zb1.png', 'zb2.png', 'zb3.png', 'zb4.png'];
 
   const projects = [
+    {
+      title: 'Zona Belajar — Online Tryout & E-Learning Platform',
+      description: 'Rebuilt a tryout & e-learning platform into two Laravel 11 apps (admin panel + student app) sharing one MySQL database. Section-based timed exams with auto-grading, per-section rankings & report breakdowns, learning materials, practice sets, student report cards, AI-assisted PDF question import, and one-click PDF exports — shipped to production with CI/CD auto-deploy.',
+      badge: 'Live Production',
+      techStack: ['Laravel', 'PHP', 'MySQL', 'Alpine.js', 'Tailwind'],
+      images: zbImages,
+      github: null,
+      demo: null,
+      docs: null,
+      live: 'https://zona-belajar.com'
+    },
     {
       title: 'TPQ Financial Management & Donation Platform',
       description: 'Built web-based financial system replacing manual recording. Multi-role authentication system (Super Admin, Admin, Wali, Public). Improved transparency and reduced risk of data loss, achieving ~100% digitalization.',
@@ -149,6 +161,7 @@ function App() {
       company: 'PT Ruangraya Indonesia · Remote',
       period: 'Sep 2024 – Dec 2024',
       icon: Code,
+      logo: 'logo-ruangguru.png',
       color: 'from-orange-500 to-amber-500',
       achievements: [
         'Developed an AI-powered Smart Home Energy Management System to analyze energy consumption from CSV data',
@@ -167,6 +180,21 @@ function App() {
         'Retouching, Redrawing & SFX: Erased original Korean text, seamlessly restored obscured backgrounds (cleaning), and artistically redesigned sound effects (SFX) into aesthetic Japanese characters'
       ],
       images: tsImages.slice(0, 3)
+    },
+    {
+      title: 'Full-Stack Developer (Freelance)',
+      company: 'Zona Belajar Indonesia · Remote',
+      period: 'Jun 2026 – Jul 2026',
+      icon: BookOpen,
+      logo: 'logo-zb.png',
+      color: 'from-blue-500 to-cyan-500',
+      achievements: [
+        'Rebuilt an online tryout & e-learning platform into two Laravel 11 apps (admin panel + student app) on one shared MySQL database, shipped to production with GitHub Actions CI/CD auto-deploy on Hostinger',
+        'Built the exam engine: section-based (subtest) scoring, timed try-outs, auto-grading, and per-section rankings & report breakdowns for both admins and students, plus one-click PDF report exports',
+        'Added AI-assisted question import from PDF — parsing questions, answer keys, and explanations — with automatic image extraction and R2-backed media storage',
+        'Hardened authentication: OTP email verification that leaves no half-created accounts, expiring password reset, and a real-time "awaiting activation" page that auto-logs users in once an admin approves them'
+      ],
+      images: zbImages.slice(0, 3)
     }
   ];
 
