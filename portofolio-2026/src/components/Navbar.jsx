@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Code, Briefcase, BookOpen, Home, User, Zap, Trophy } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import CVExport from './CVExport';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -136,8 +137,9 @@ const Navbar = () => {
                 </motion.a>
               ))}
 
-              {/* Pemisah + toggle tema */}
+              {/* Pemisah + export CV + toggle tema */}
               <span className="w-px h-6 bg-white/30 mx-1 lg:mx-2" />
+              <CVExport />
               <ThemeToggle className="w-9 h-9 text-white hover:bg-white/15" />
             </div>
           </div>
@@ -220,7 +222,12 @@ const Navbar = () => {
                   </motion.a>
                 ))}
               </div>
-              
+
+              {/* Export CV (mobile) */}
+              <div className="mt-4 px-1">
+                <CVExport className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-amber-700 font-semibold shadow-md hover:bg-amber-50 transition-colors" />
+              </div>
+
               {/* Footer menu mobile */}
               <div className="absolute bottom-8 left-0 right-0 px-5">
                 <div className="border-t border-white/20 pt-4">

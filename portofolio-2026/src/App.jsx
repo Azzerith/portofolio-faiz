@@ -157,7 +157,12 @@ function App() {
     { name: 'GitHub', img: 'github.svg', dark: true },
     { name: 'Docker', img: 'docker.svg' },
     { name: 'REST API', fa: 'fas fa-plug', color: '#10B981' },
+    // AI-Assisted / Vibe Coding
     { name: 'AI-Assisted Dev', fa: 'fas fa-robot', color: '#8B5CF6' },
+    { name: 'Cursor', fa: 'fas fa-i-cursor', color: '#06B6D4' },
+    { name: 'GitHub Copilot', fa: 'fas fa-wand-magic-sparkles', color: '#10B981' },
+    { name: 'Claude Code', fa: 'fas fa-terminal', color: '#D97706' },
+    { name: 'Prompt Engineering', fa: 'fas fa-comment-dots', color: '#EC4899' },
     // Desain
     { name: 'Adobe Photoshop', img: 'photoshop.svg' },
     { name: 'Adobe Illustrator', img: 'illustrator.svg' },
