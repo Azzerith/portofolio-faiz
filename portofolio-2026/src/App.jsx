@@ -25,10 +25,10 @@ function App() {
 
   const projects = [
     {
-      title: 'Enterprise ERP — HRIS & Warehouse Management System (WMS)',
-      description: 'Full-stack engineer on a large Go microservices + Next.js ERP for a pharmaceutical manufacturer. Scaffolded and owned the WMS/Manufacture module (~11 menus, ~60 REST endpoints) covering master data, stock ledger, inbound/outbound, production, purchase orders, and marketplace resi integration with TikTok & Shopee schedulers. Also built two HRIS features end-to-end — Attendance Correction and Shift/Day Exchange — each with multi-level SPV–HR approval workflows. 200+ commits across backend & frontend in the first two months.',
-      badge: '200+ Commits',
-      techStack: ['Golang', 'Next.js', 'MongoDB', 'Docker', 'REST API'],
+      title: 'Enterprise ERP — Pharmaceutical (WMS, Manufacturing, HRIS, Finance, QC)',
+      description: 'Core full-stack engineer on a large Go microservices + Next.js ERP for a pharmaceutical manufacturer, with 1,300+ commits across backend & frontend (plus 230+ ADR/architecture docs and the MyBharata Flutter app). Owned multiple modules end-to-end: WMS & Manufacturing (~11 menus, ~60 endpoints with marketplace resi automation), the HRIS KPI/performance engine, an ERP-native Procurement suite, Finance (FAT) analytics dashboards, the Quality (QC/CAPA) module, and the Program Culture / Bharata Club feature — plus HRIS self-service flows (Attendance Correction & Shift Exchange) with multi-level approvals.',
+      badge: '1,300+ Commits',
+      techStack: ['Golang', 'Next.js', 'Flutter', 'MongoDB', 'Docker', 'REST API'],
       images: ['erp1.png', 'erp2.png', 'erp3.png', 'erp4.png'],
       github: null,
       demo: null,
@@ -36,7 +36,7 @@ function App() {
     },
     {
       title: 'Zona Belajar — Online Tryout & E-Learning Platform',
-      description: 'Rebuilt a tryout & e-learning platform into two Laravel 11 apps (admin panel + student app) sharing one MySQL database. Section-based timed exams with auto-grading, per-section rankings & report breakdowns, learning materials, practice sets, student report cards, AI-assisted PDF question import, and one-click PDF exports — shipped to production with CI/CD auto-deploy.',
+      description: 'Rebuilt a tryout & e-learning platform into two Laravel 11 apps (admin panel + student app) sharing one MySQL database. Section-based timed exams with auto-grading, per-section rankings & report breakdowns, a Premium subscription subsystem, a Cognitive Potential Test (TPK) with automatic IQ estimation, Web Push notifications, AI-assisted PDF question import, and hardened security (rate-limiting, XSS sanitization, account-takeover protection) — shipped to production with CI/CD auto-deploy.',
       badge: 'Live Production',
       techStack: ['Laravel', 'PHP', 'MySQL', 'Alpine.js', 'Tailwind'],
       images: zbImages,
@@ -144,6 +144,7 @@ function App() {
     { name: 'React', img: 'react.svg' },
     { name: 'Next.js', img: 'nextjs.svg', dark: true },
     { name: 'Laravel', img: 'laravel.svg' },
+    { name: 'Flutter', fa: 'fas fa-mobile-screen-button', color: '#02569B' },
     { name: 'Node.js', img: 'nodejs.svg' },
     { name: 'Vue.js', img: 'vue.svg' },
     { name: 'Tailwind CSS', img: 'tailwind.svg' },
@@ -157,7 +158,7 @@ function App() {
     { name: 'GitHub', img: 'github.svg', dark: true },
     { name: 'Docker', img: 'docker.svg' },
     { name: 'REST API', fa: 'fas fa-plug', color: '#10B981' },
-    // AI-Assisted / Vibe Coding
+    // AI-Assisted Development
     { name: 'AI-Assisted Dev', fa: 'fas fa-robot', color: '#8B5CF6' },
     { name: 'Cursor', fa: 'fas fa-i-cursor', color: '#06B6D4' },
     { name: 'GitHub Copilot', fa: 'fas fa-wand-magic-sparkles', color: '#10B981' },
@@ -237,15 +238,16 @@ function App() {
     {
       title: 'Full-Stack Developer (Freelance)',
       company: 'Zona Belajar Indonesia · Remote',
-      period: 'Jun 2026 – Jul 2026',
+      period: 'Jun 2026 – Present',
       icon: BookOpen,
       logo: 'logo-zb.png',
       color: 'from-blue-500 to-cyan-500',
       achievements: [
         'Rebuilt an online tryout & e-learning platform into two Laravel 11 apps (admin panel + student app) on one shared MySQL database, shipped to production with GitHub Actions CI/CD auto-deploy on Hostinger',
-        'Built the exam engine: section-based (subtest) scoring, timed try-outs, auto-grading, and per-section rankings & report breakdowns for both admins and students, plus one-click PDF report exports',
-        'Added AI-assisted question import from PDF — parsing questions, answer keys, and explanations — with automatic image extraction and R2-backed media storage',
-        'Hardened authentication: OTP email verification that leaves no half-created accounts, expiring password reset, and a real-time "awaiting activation" page that auto-logs users in once an admin approves them'
+        'Built the exam engine: section-based (subtest) scoring, timed try-outs, auto-grading, multiple-answer-key support, and per-section rankings & report breakdowns, plus one-click PDF report exports',
+        'Built a Premium subscription subsystem (package catalog, locked materials, multi-attempt quotas, payment verification) and a Cognitive Potential Test (TPK) with automatic IQ estimation and per-participant reports',
+        'Added Web Push notifications (payment alerts to admins even with the browser closed) and hardened security: rate-limiting, stored-XSS sanitization, answer-key leak prevention during exams, and account-takeover protection',
+        'Added AI-assisted question import from PDF — parsing questions, answer keys, and explanations — with automatic image extraction and R2-backed media storage'
       ],
       images: zbImages.slice(0, 3)
     },
@@ -257,10 +259,11 @@ function App() {
       logo: 'logo-bharata.png',
       color: 'from-emerald-500 to-teal-600',
       achievements: [
-        'Full-time on-site engineer on a Go microservices + Next.js ERP; shipped 200+ commits across the backend (bip-erp) and frontend (erp-frontend) within the first two months',
-        'Built the Attendance Correction feature end-to-end — scaffolded the attendance service from scratch: 6 REST endpoints and 2 UI pages with multi-level SPV–HR approval routing, an H-7 correction window, and anti-fraud validation',
-        'Built the Shift/Day Exchange feature — 6 endpoints and 2 pages with calendar-based scheduling, eligibility validation, and multi-level approvals including a partner-consent flow',
-        'Owned the entire WMS / Manufacture module — scaffolded the service and delivered ~11 menus and ~60 endpoints spanning master data, stock ledger, inbound/outbound, production, purchase orders, and marketplace resi integration (TikTok & Shopee schedulers)'
+        'Core full-stack engineer on a production pharmaceutical ERP: 1,300+ commits across the Go microservices backend (bip-erp) and Next.js frontend (erp-frontend), plus 230+ architecture-decision records (ADR) and 50+ commits on the MyBharata Flutter mobile app',
+        'Owned the WMS & Manufacturing modules end-to-end (~11 menus, ~60 endpoints) — master data, stock ledger, inbound/outbound, production, purchase orders, and marketplace resi automation (TikTok & Shopee schedulers)',
+        'Built the HRIS KPI / Performance-Management module: a configurable scoring engine (hit/miss & directional-ramp scoring, weighted targets, configurable book-closing) with auto-computed metrics and full config-audit history for Directors/IT',
+        'Delivered an ERP-native Procurement suite, Finance (FAT) analytics dashboards, the Quality (QC/CAPA) module, and the Program Culture / Bharata Club feature (dynamic form builder + QR attendance) consumed by the MyBharata app',
+        'Shipped two HRIS self-service features — Attendance Correction and Shift/Day Exchange — each with multi-level SPV–HR approval routing, eligibility & anti-fraud validation, and a partner-consent flow'
       ]
     }
   ];
@@ -307,7 +310,7 @@ function App() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  Full-time <span className="font-semibold text-emerald-600">Full-Stack Developer</span> at PT Bharata Internasional, building enterprise ERP systems with <span className="font-semibold text-amber-600">Golang</span> microservices and <span className="font-semibold text-blue-500">Next.js</span> — from HRIS workflows to a full Warehouse Management System, with 200+ commits shipped in two months.
+                  Full-time <span className="font-semibold text-emerald-600">Full-Stack Developer</span> at PT Bharata Internasional, building enterprise ERP systems with <span className="font-semibold text-amber-600">Golang</span> microservices and <span className="font-semibold text-blue-500">Next.js</span> — from Warehouse Management and Manufacturing to HRIS/KPI, Finance and Quality modules, with 1,300+ commits across backend, frontend & a Flutter mobile app.
                   Also passionate about visual storytelling and <span className="font-semibold text-pink-500">Graphic Design</span>, blending engineering with creative expertise in digital illustration and webtoon typesetting.
                 </motion.p>
                 <motion.div 
